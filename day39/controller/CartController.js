@@ -1,14 +1,26 @@
 const connection = require('../config/connection');
 const { StatusCodes } = require('http-status-codes');
+import jwt from 'jsonwebtoken';
+const ensureAuthorization = require('../auth');
 
 const addToCart = async (req, res) => {
-  const { bookId, quantity, userId } = req.body;
+  const { bookId, quantity } = req.body;
 
-  try {
+  const authorization = ensureAuthorization(req);
+
+  if (authorization instanceof jwt.TokenExpiredError) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      message: '로그인 세션이 만료되었습니다. 다시 로그인해주세요.',
+    });
+  } else if (authorization instanceof jwt.JsonWebTokenError) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      message: '잘못된 토큰입니다.',
+    });
+  } else {
     const conn = await connection();
     const result = await conn.query(
       'INSERT INTO cartItems (book_id, user_id, quantity) VALUES(?, ?, ?)',
-      [bookId, userId, quantity]
+      [bookId, authorization.id, quantity]
     );
 
     if (!result.length) {
@@ -16,15 +28,23 @@ const addToCart = async (req, res) => {
     }
 
     return res.status(StatusCodes.OK).json(result);
-  } catch (err) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
   }
 };
 
 const getCartItem = async (req, res) => {
-  const { userId, selected } = req.body;
+  const { selected } = req.body;
 
-  try {
+  const authorization = ensureAuthorization(req, res);
+
+  if (authorization instanceof jwt.TokenExpiredError) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      message: '로그인 세션이 만료되었습니다. 다시 로그인해주세요.',
+    });
+  } else if (authorization instanceof jwt.JsonWebTokenError) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      message: '잘못된 토큰입니다.',
+    });
+  } else {
     const conn = await connection();
     const result = await conn.query(
       `
@@ -33,7 +53,7 @@ const getCartItem = async (req, res) => {
 				ON cartItems.book_id = books.id
 				WHERE user_id = ? AND id IN (?)
 			`,
-      [userId, ...selected]
+      [authorization.id, ...selected]
     );
 
     if (!result.length) {
@@ -41,25 +61,31 @@ const getCartItem = async (req, res) => {
     }
 
     return res.status(StatusCodes.OK).json(result);
-  } catch (err) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
   }
 };
 
 const removeCartItem = async (req, res) => {
-  const { id } = req.params;
+  const cartItemId = req.params.id;
 
-  try {
+  const authorization = ensureAuthorization(req);
+
+  if (authorization instanceof jwt.TokenExpiredError) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      message: '로그인 세션이 만료되었습니다. 다시 로그인해주세요.',
+    });
+  } else if (authorization instanceof jwt.JsonWebTokenError) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      message: '잘못된 토큰입니다.',
+    });
+  } else {
     const conn = await connection();
-    const result = await conn.query('DELETE from cartItems WHERE id = ?', id);
+    const result = await conn.query('DELETE from cartItems WHERE id = ?', cartItemId);
 
     if (!result.length) {
       return res.status(StatusCodes.BAD_REQUEST).end();
     }
 
     return res.status(StatusCodes.OK).json(result);
-  } catch (err) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
   }
 };
 

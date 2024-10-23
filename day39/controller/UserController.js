@@ -35,6 +35,7 @@ const login = async (req, res) => {
     if (loginUser && loginUser.password === hashPassword) {
       const token = jwt.sign(
         {
+          id: loginUser.id,
           email: loginUser.email,
           name: loginUser.name,
         },
