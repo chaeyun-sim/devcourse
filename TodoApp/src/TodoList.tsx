@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
+import TodoModal from './TodoModal';
 
-type Todo = {
+export type Todo = {
 	id: number;
 	text: string;
 	isChecked: boolean;
@@ -27,7 +28,6 @@ const TodoList: React.FC = () => {
     },
 	]);
 	const [todo, setTodo] = useState('')
-	const [showDetail, setShowDetail] = useState(false);
 	const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null)
 	
 	const handleChange = (id: number) => {
@@ -52,15 +52,7 @@ const TodoList: React.FC = () => {
 		setTodos(todos.filter(todo => todo.id !== id))
 	}
 
-	const handleTodoClick = (todo: Todo) => {
-		setShowDetail(true)
-		setSelectedTodo(todo)
-	}
-
-	const handleCloseDetail = () => {
-		setShowDetail(false)
-		setSelectedTodo(null)
-	}
+	const handleTodoClick = (todo: Todo) => setSelectedTodo(todo);
 
 	return (
     <div style={{ width: '100%' }}>
@@ -78,8 +70,11 @@ const TodoList: React.FC = () => {
         <br />
         <div className='board'>
           <ul>
-            {todos.map((todo, idx) => (
-              <li key={todo.id}>
+            {todos.map((todo) => (
+              <li
+                key={todo.id}
+                onClick={() => handleTodoClick(todo)}
+              >
                 <input
                   type='checkbox'
                   checked={todo.isChecked}
@@ -97,6 +92,11 @@ const TodoList: React.FC = () => {
           </ul>
         </div>
       </div>
+      <TodoModal
+        show={!!selectedTodo}
+        todo={selectedTodo!}
+        onHide={() => setSelectedTodo(null)}
+      ></TodoModal>
     </div>
   );
 };
