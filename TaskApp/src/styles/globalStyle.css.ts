@@ -41,7 +41,7 @@ export const vars = createGlobalTheme(':root', {
     medium: '10px',
     big1: '20px',
     big2: '15px',
-    listSpacing: '30x',
+    listSpacing: '30px',
   },
   font: {
     body: 'arial',
