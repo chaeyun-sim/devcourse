@@ -46,7 +46,7 @@ const SideForm: FC<TSideFormProps> = ({ onClose }) => {
       <input
         autoFocus
         className={styles.input}
-        placeholder='새로운 게시판 등록하기'
+        placeholder='새로운 게시판 등록'
         value={inputText}
         onChange={handleChange}
       />

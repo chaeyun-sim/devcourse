@@ -11,7 +11,6 @@ export const container = style({
 	boxShadow: vars.shadow.basic,
 	cursor: 'pointer',
 	":hover": {
-		// backgroundColor: vars.color.task.hover,
 		transform: 'scale(1.03)'
 	}
 })
@@ -19,9 +18,9 @@ export const container = style({
 export const title = style({
 	fontSize: vars.fontSize.T4,
 	fontWeight: 'bold',
-	marginBottom: vars.spacing.small
 })
 
 export const desc = style({
-	fontSize: vars.fontSize.P1,
-})
+  fontSize: vars.fontSize.P1,
+  marginTop: vars.spacing.small,
+});

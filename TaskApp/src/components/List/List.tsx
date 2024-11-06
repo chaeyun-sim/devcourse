@@ -23,7 +23,7 @@ const List: FC<TListProps> = ({ list, boardId }) => {
 		dispatch(deleteList({ boardId, listId }));
 		dispatch(addLog({
 			logId: v4(),
-			logMessage: `리스트 삭제하기: ${list.listName}`,
+			logMessage: `리스트 삭제: ${list.listName}`,
 			logAuthor: 'User',
 			logTimestamp: String(Date.now())
 		}))
@@ -50,8 +50,6 @@ const List: FC<TListProps> = ({ list, boardId }) => {
         >
           <Task
             task={task}
-            boardId={boardId}
-            taskIndex={taskIndex}
           />
         </div>
       ))}

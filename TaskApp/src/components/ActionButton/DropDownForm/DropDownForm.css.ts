@@ -23,18 +23,18 @@ export const listForm = style({
 });
 
 export const input = style({
-	padding: `0 ${vars.spacing.medium}`,
-	fontSize: vars.fontSize.P1,
-	minHeight: 60,
-	marginBottom: vars.spacing.medium,
-	border: 'none',
-	boxShadow: vars.shadow.basic,
-	borderRadius: 4,
-	resize: 'none',
-	overflow: 'hidden',
-	wordWrap: 'break-word',
-
-})
+  padding: vars.spacing.medium,
+  fontSize: vars.fontSize.P1,
+  minHeight: 60,
+  marginBottom: vars.spacing.medium,
+  border: 'none',
+  boxShadow: vars.shadow.basic,
+  borderRadius: 4,
+  resize: 'none',
+  overflow: 'hidden',
+  wordWrap: 'break-word',
+  outline: 'none',
+});
 
 export const button = style({
 	width: 150,

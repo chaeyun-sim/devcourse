@@ -16,8 +16,8 @@ type TDropdownForm = {
 const DropDownForm: FC<TDropdownForm> = ({ list, boardId, listId, onClose }) => {
 	const dispatch = useTypedDispatch();
   const [text, setText] = useState('');
-	const formPlaceholder = list ? '리스트의 제목을 입력하세요.' : '일의 제목을 입력하세요.';
-	const buttonTitle = list ? '리스트 추가하기' : '일 추가하기'
+	const formPlaceholder = list ? '리스트의 제목을 입력하세요.' : '할 일의 제목을 입력하세요.';
+	const buttonTitle = list ? '리스트 추가' : '할 일 추가'
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
@@ -44,15 +44,15 @@ const DropDownForm: FC<TDropdownForm> = ({ list, boardId, listId, onClose }) => 
 				task: {
 					taskId: v4(),
 					taskName: text,
-					taskOwner: 'User',
-					taskDescription: 'description'
+					taskOwner: '',
+					taskDescription: ''
 				}
 			}))
 		}
 		dispatch(
       addLog({
         logId: v4(),
-        logMessage: `${list ? '리스트' : '일'} 생성하기: ${text}`,
+        logMessage: `${list ? '리스트' : '할 일'} 생성: ${text}`,
         logAuthor: 'User',
         logTimestamp: String(Date.now()),
       })
