@@ -1,10 +1,12 @@
-import { FC, useCallback, useState } from 'react';
-import { useBoard } from '../../hooks/redux';
+import { FC } from 'react';
+import { useAuth } from '../../hooks/redux';
 import SideForm from './SideForm/SideForm';
-import { FiPlusCircle } from 'react-icons/fi';
+import { FiLogIn, FiPlusCircle } from 'react-icons/fi';
+import {GoSignOut} from 'react-icons/go'
 import * as styles from './BoardList.css';
 import clsx from 'clsx';
 import { IBoard } from '../../types';
+import { useBoardList } from '../../hooks/useBoardList';
 
 type TBoardListProps = {
   activeBoardId: string;
@@ -12,15 +14,18 @@ type TBoardListProps = {
 };
 
 const BoardList: FC<TBoardListProps> = ({ activeBoardId, onSetActiveBoardId }) => {
-	const { boardArray } = useBoard();
-	const [isFormOpen, setIsFormOpen] = useState(false)
-
-	const handleOpen = useCallback(() => setIsFormOpen(true), []);
-  const handleClose = useCallback(() => setIsFormOpen(false), []);
-	const handleSetBoardId = (boardId: string) => onSetActiveBoardId(boardId);
-
-	const isActiveBoard = (index: number) =>
-		boardArray.findIndex(b => b.boardId === activeBoardId) === index;
+    const isLoggedIn = useAuth();
+  const {
+    boardArray,
+    isActiveBoard,
+    isFormOpen,
+    handleOpen,
+    handleClose,
+    handleSetBoardId,
+    handleLogin,
+    handleLogout,
+  } = useBoardList(activeBoardId, onSetActiveBoardId);
+  
 	
 	const BoardItem = ({ board, index }: { board: IBoard; index: number; }) => {
 		return (
@@ -50,12 +55,21 @@ const BoardList: FC<TBoardListProps> = ({ activeBoardId, onSetActiveBoardId }) =
         {isFormOpen ? (
           <SideForm onClose={handleClose} />
         ) : (
-          <button
+          <FiPlusCircle
             className={styles.addButton}
             onClick={handleOpen}
-          >
-            <FiPlusCircle />
-          </button>
+          />
+        )}
+        {isLoggedIn ? (
+          <GoSignOut
+            className={styles.addButton}
+            onClick={handleLogout}
+          />
+        ) : (
+          <FiLogIn
+            className={styles.addButton}
+            onClick={handleLogin}
+          />
         )}
       </div>
     </div>

@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "firebase": "^11.0.1",
+    "firebase-tools": "^13.24.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -17,6 +19,7 @@
     "@eslint/js": "^9.13.0",
     "@reduxjs/toolkit": "^2.3.0",
     "@types/react": "^18.3.12",
+    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18.3.1",
     "@vanilla-extract/css": "^1.16.0",
     "@vanilla-extract/css-utils": "^0.1.4",

@@ -9,6 +9,7 @@ import { v4 } from 'uuid';
 import { setModalData } from '../../store/slices/modalSlice';
 import * as styles from './List.css'
 import ActionButton from '../ActionButton/ActionButton';
+import { Droppable } from 'react-beautiful-dnd';
 
 type TListProps = {
 	list: IList;
@@ -35,26 +36,36 @@ const List: FC<TListProps> = ({ list, boardId }) => {
 	}
 
 	return (
-    <div className={styles.listWrapper}>
-      <div className={styles.header}>
-        <div className={styles.name}>{list.listName}</div>
-        <GrSubtract
-          className={styles.deleteButton}
-          onClick={handleListDelete}
-        />
-      </div>
-      {list.tasks.map((task, taskIndex) => (
+    <Droppable droppableId={list.listId}>
+      {provided => (
         <div
-          key={task.taskId}
-          onClick={() => handleTaskChange(task)}
+          className={styles.listWrapper}
+          {...provided.droppableProps}
+          ref={provided.innerRef}
         >
-          <Task
-            task={task}
+          <div className={styles.header}>
+            <div className={styles.name}>{list.listName}</div>
+            <GrSubtract
+              className={styles.deleteButton}
+              onClick={handleListDelete}
+            />
+          </div>
+          {list.tasks.map((task, index) => (
+            <Task
+              key={task.taskId}
+              task={task}
+              taskIndex={index}
+              onClick={() => handleTaskChange(task)}
+            />
+          ))}
+          {provided.placeholder}
+          <ActionButton
+            boardId={boardId}
+            listId={listId}
           />
         </div>
-      ))}
-      <ActionButton boardId={boardId} listId={listId} />
-    </div>
+      )}
+    </Droppable>
   );
 };
 

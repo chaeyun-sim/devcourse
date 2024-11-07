@@ -23,6 +23,7 @@ export const addButton = style({
 	fontSize: vars.fontSize.T2,
 	cursor: 'pointer',
 	marginLeft: vars.spacing.big1,
+	height: '100%',
 	":hover": {
 		opacity: 0.8
 	}
@@ -55,7 +56,8 @@ export const boardItemActive = style({
 export const addSection = style({
 	display: 'flex',
 	alignItems: 'center',
-	marginLeft: 'auto'
+	marginLeft: 'auto',
+	height: '20px',
 })
 
 export const smallTitle = style({

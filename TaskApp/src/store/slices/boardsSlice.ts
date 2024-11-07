@@ -36,6 +36,15 @@ type TDeleteTaskAction = {
   taskId: string;
 }
 
+type TSortAction = {
+  boardIndex: number;
+  droppableIdStart: string;
+  droppableIdEnd: string;
+  droppableIndexStart: number;
+  droppableIndexEnd: number;
+  draggableId: string;
+}
+
 const initialState: TProps = {
   modalActive: false,
   boardArray: [
@@ -115,6 +124,23 @@ const boardsSlice = createSlice({
       const targetList = targetBoard.list.find(l => l.listId === payload.listId)!;
       targetList.tasks = targetList.tasks.filter(task => task.taskId !== payload.taskId);
     },
+    sort: (state, { payload }: PayloadAction<TSortAction>) => {
+      const { boardArray } = state;
+
+      const list = boardArray[payload.boardIndex].list.find(
+        list => list.listId === payload.droppableIdStart
+      );
+      const card = list?.tasks.splice(payload.droppableIndexStart, 1);
+      
+      if (payload.droppableIdStart === payload.droppableIdEnd) {
+        list?.tasks.splice(payload.droppableIndexEnd, 0, ...card!);
+      } else {
+        const listEnd = boardArray[payload.boardIndex].list.find(
+          list => list.listId === payload.droppableIdEnd
+        );
+        listEnd?.tasks.splice(payload.droppableIndexEnd, 0, ...card!);
+      }
+    },
   },
 });
 
@@ -127,5 +153,6 @@ export const {
   addTask,
   updateTask,
   deleteTask,
+  sort
 } = boardsSlice.actions;
 export const boardsReducer = boardsSlice.reducer;

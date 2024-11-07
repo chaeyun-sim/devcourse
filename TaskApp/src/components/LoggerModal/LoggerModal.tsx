@@ -10,7 +10,6 @@ type TLoggerModal = {
 
 const LoggerModal: FC<TLoggerModal> = ({ onClose }) => {
 	const { logArray } = useLogger();
-	console.log(logArray)
 
 	return (
 		<div className={styles.wrapper}>
