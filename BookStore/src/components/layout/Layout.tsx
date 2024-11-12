@@ -1,15 +1,23 @@
 import React, { ReactNode } from 'react';
 import Header from '../header/Header';
-import Footer from '../common/Footer';
+import Footer from '../footer/Footer';
+import styled from 'styled-components';
 
 const Layout = ({ children }: {children: ReactNode}) => {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <LayoutStyle>{children}</LayoutStyle>
       <Footer />
     </>
   )
 }
 
 export default Layout;
+
+const LayoutStyle = styled.main`
+  width: 100%;
+  margin: 0 auto;
+  max-width: ${({ theme }) => theme.layout.width.large};
+  padding: 20px 0;
+`
