@@ -1,42 +1,27 @@
-import React from 'react';
-import { styled } from 'styled-components';
-import logo from '../../assets/logo.png';
+import React from 'react'
+import { styled } from 'styled-components'
+import logo from '../../assets/logo.png'
 import { FaRegUser, FaSignInAlt } from 'react-icons/fa'
-
-const CATEGORY = [
-	{
-		id: null,
-		name: '전체',
-	},
-	{
-		id: 1,
-		name: '동화'
-	},
-	{
-		id: 2,
-		name: '소설'
-	},
-	{
-		id: 3,
-		name: '사회'
-	}
-]
+import { Link } from 'react-router-dom'
+import { useCategory } from '@/hooks/useCategory'
 
 const Header = () => {
-	return (
+  const { category } = useCategory()
+
+  return (
     <HeaderStyle>
       <h1 className="logo">
-        <a href={'/'}>
+        <Link to={'/'}>
           <img src={logo} alt="book store" />
-        </a>
+        </Link>
       </h1>
       <nav className="category">
         <ul>
-          {CATEGORY.map((item) => (
+          {category.map((item) => (
             <li key={item.id}>
-              <a href={item.id === null ? '/books' : `/books?category_id=${item.id}`}>
+              <Link to={item.id === null ? '/books' : `/books?category_id=${item.id}`}>
                 {item.name}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -44,23 +29,24 @@ const Header = () => {
       <nav className="auth">
         <ul>
           <li>
-            <a href="/login">
+            <Link to="/login">
               <FaSignInAlt /> 로그인
-            </a>
+            </Link>
           </li>
         </ul>
         <ul>
           <li>
-            <a href="/siginup"><FaRegUser /> 회원가입</a>
+            <Link to="/siginup">
+              <FaRegUser /> 회원가입
+            </Link>
           </li>
         </ul>
       </nav>
     </HeaderStyle>
   )
-};
+}
 
-export default Header;
-
+export default Header
 
 const HeaderStyle = styled.header`
   width: 100%;
