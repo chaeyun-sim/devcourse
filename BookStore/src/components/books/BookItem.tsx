@@ -4,6 +4,7 @@ import React from 'react'
 import { FaHeart } from 'react-icons/fa'
 import styled from 'styled-components'
 import { ViewMode } from './BooksViewSwitcher'
+import { Link } from 'react-router-dom'
 
 interface IProps {
   book: Book
@@ -13,19 +14,21 @@ interface IProps {
 const BookItem = ({ book, view }: IProps) => {
   return (
     <BookItemStyle view={view}>
-      <div className="img">
-        <img src={getImgSrc(book.id)} alt={book.title} />
-      </div>
-      <div className="content">
-        <h2 className="title">{book.title}</h2>
-        <p className="summary">{book.summary}</p>
-        <p className="author">{book.author}</p>
-        <p className="price">{book.price.toLocaleString()}원</p>
-        <div className="liked">
-          <FaHeart />
-          <span>{book.likes}</span>
+      <Link to={`/book/${book.id}`}>
+        <div className="img">
+          <img src={getImgSrc(book.id)} alt={book.title} />
         </div>
-      </div>
+        <div className="content">
+          <h2 className="title">{book.title}</h2>
+          <p className="summary">{book.summary}</p>
+          <p className="author">{book.author}</p>
+          <p className="price">{book.price.toLocaleString()}원</p>
+          <div className="liked">
+            <FaHeart />
+            <span>{book.likes}</span>
+          </div>
+        </div>
+        </Link>
     </BookItemStyle>
   )
 }
@@ -33,9 +36,12 @@ const BookItem = ({ book, view }: IProps) => {
 export default BookItem
 
 const BookItemStyle = styled.div<Pick<IProps, 'view'>>`
-  display: flex;
-  flex-direction: ${({ view }) => (view === 'grid' ? 'column' : 'row')};
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  a {
+    display: flex;
+    flex-direction: ${({ view }) => (view === 'grid' ? 'column' : 'row')};
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+  }
 
   .img {
     border-radius: ${({ theme }) => theme.borderRadius.default};

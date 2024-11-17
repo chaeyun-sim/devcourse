@@ -8,7 +8,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Signup from './pages/Signup'
 import ResetPassword from './pages/ResetPassword'
 import Login from './pages/Login'
-import Books from './pages/Books'
+import BookDetail from './components/books/BookDetail'
 
 const router = createBrowserRouter([
   {
@@ -32,9 +32,9 @@ const router = createBrowserRouter([
     element: <Login />
   },
   {
-    path: '/books',
-    element: <Books />
-  }
+    path: '/book/:bookId',
+    element: <BookDetail />
+  },
 ])
 
 function App() {
