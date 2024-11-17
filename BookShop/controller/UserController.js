@@ -50,7 +50,7 @@ const login = async (req, res) => {
         httpOnly: true,
       });
 
-      return res.status(StatusCodes.OK).json(token);
+      return res.status(StatusCodes.OK).json({ ...results[0], token });
     }
     return res.status(StatusCodes.UNAUTHORIZED).json(token);
   });

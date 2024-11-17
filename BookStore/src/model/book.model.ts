@@ -7,7 +7,7 @@ export interface Book {
   isbn: string
   summary: string
   detail: string
-  auto: string
+  author: string
   pages: number
   content: string
   price: number

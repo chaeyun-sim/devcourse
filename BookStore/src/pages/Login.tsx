@@ -1,8 +1,9 @@
-import { signup } from '@/api/auth.api'
+import { login, signup } from '@/api/auth.api'
 import Button from '@/components/common/Button'
 import InputText from '@/components/common/Input'
 import Title from '@/components/common/Title'
 import { useAlert } from '@/hooks/useAlert'
+import { useAuthStore } from '@/store/authStore'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -13,9 +14,11 @@ export interface FormData {
   password: string
 }
 
-const Signup = () => {
+const Login = () => {
   const navigate = useNavigate()
   const showAlert = useAlert()
+
+  const { isLoggedIn, storeLogin, storeLogout } = useAuthStore()
 
   const {
     register,
@@ -24,16 +27,21 @@ const Signup = () => {
   } = useForm<FormData>()
 
   const onSubmit = (data: FormData) => {
-    signup(data).then((res) => {
-      showAlert('회원가입이 완료되었습니다.')
-      navigate('/login')
-    })
+    login(data)
+      .then((res) => {
+        storeLogin(res.token)
+        showAlert('로그인 완료되었습니다.')
+        navigate('/')
+      })
+      .catch((err) => {
+        showAlert('로그인 실패')
+      })
   }
 
   return (
     <>
-      <Title size="large">회원가입</Title>
-      <SignupStyle>
+      <Title size="large">로그인</Title>
+      <LoginStyle>
         <form onSubmit={handleSubmit(onSubmit)}>
           <fieldset>
             <InputText
@@ -61,17 +69,17 @@ const Signup = () => {
             </Button>
           </fieldset>
           <div className="info">
-            <Link to={'/reset'}>비밀번호 초기화</Link>
+            <Link to={'/reset'}>로그인</Link>
           </div>
         </form>
-      </SignupStyle>
+      </LoginStyle>
     </>
   )
 }
 
-export default Signup
+export default Login
 
-export const SignupStyle = styled.div`
+export const LoginStyle = styled.div`
   max-width: ${({ theme }) => theme.layout.width.small};
   margin: 80px auto;
 

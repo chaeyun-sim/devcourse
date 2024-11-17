@@ -6,6 +6,9 @@ import ThemeSwitch from './components/header/ThemeSwitch'
 import { BookStoreThemeProvider } from './context/themeContext'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Signup from './pages/Signup'
+import ResetPassword from './pages/ResetPassword'
+import Login from './pages/Login'
+import Books from './pages/Books'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +22,18 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <Signup />
+  },
+  {
+    path: '/reset',
+    element: <ResetPassword />
+  },
+  {
+    path: '/login',
+    element: <Login />
+  },
+  {
+    path: '/books',
+    element: <Books />
   }
 ])
 

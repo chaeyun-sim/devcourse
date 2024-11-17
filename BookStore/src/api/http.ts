@@ -1,3 +1,4 @@
+import { getToken, removeToken } from '@/store/authStore'
 import axios, { AxiosRequestConfig } from 'axios'
 
 const BASE_URL = 'http://localhost:9999'
@@ -8,7 +9,8 @@ export const createClient = (config: AxiosRequestConfig) => {
     baseURL: BASE_URL,
     timeout: DEFAULT_TIMEOUT,
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: getToken() || ''
     },
     withCredentials: true,
     ...config
@@ -19,6 +21,11 @@ export const createClient = (config: AxiosRequestConfig) => {
       return response
     },
     (error) => {
+      if (error.response.status === 401) {
+        removeToken()
+        window.location.href = '/login'
+        return
+      }
       return Promise.reject(error)
     }
   )
