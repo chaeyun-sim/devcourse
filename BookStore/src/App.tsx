@@ -9,6 +9,9 @@ import Signup from './pages/Signup'
 import ResetPassword from './pages/ResetPassword'
 import Login from './pages/Login'
 import BookDetail from './components/books/BookDetail'
+import Cart from './pages/Cart'
+import Order from './pages/Order'
+import OrderList from './pages/OrderList'
 
 const router = createBrowserRouter([
   {
@@ -35,6 +38,18 @@ const router = createBrowserRouter([
     path: '/book/:bookId',
     element: <BookDetail />
   },
+  {
+    path: '/cart',
+    element: <Cart />
+  },
+  {
+    path: '/order',
+    element: <Order />
+  },
+  {
+    path: '/orderlist',
+    element: <OrderList />
+  }
 ])
 
 function App() {
