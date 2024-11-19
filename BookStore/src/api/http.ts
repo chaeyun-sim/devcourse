@@ -1,5 +1,5 @@
 import { getToken, removeToken } from '@/store/authStore'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, Method } from 'axios'
 
 const BASE_URL = 'http://localhost:9999'
 const DEFAULT_TIMEOUT = 30000
@@ -34,3 +34,15 @@ export const createClient = (config: AxiosRequestConfig) => {
 }
 
 export const httpClient = createClient({})
+
+type RequestMethod = 'get' | 'post' | 'put' | 'delete'
+
+
+export const requestHandler = async <TResponse, TPayload = any>(
+  method: RequestMethod,
+  url: string,
+  payload?: TPayload
+): Promise<TResponse> => {
+  const response = await httpClient[method](url, payload!)
+  return response.data
+}

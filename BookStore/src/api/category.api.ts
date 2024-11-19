@@ -1,6 +1,5 @@
-import { httpClient } from './http'
+import { requestHandler } from './http'
 
 export const fetchCategory = async () => {
-  const response = await httpClient.get('/category')
-  return response.data
+  return requestHandler('get', '/category')
 }

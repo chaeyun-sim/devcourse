@@ -6,6 +6,17 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src')
     },
-    plugins: [new AntdDayjsWebpackPlugin()]
+    plugins: [
+      {
+        plugin: cracoAlias,
+        option: {
+          source: 'tsconfig',
+          baseUrl: '.',
+          tsConfigPath: 'tsconfig.paths.json',
+          debug: false
+        }
+      },
+      new AntdDayjsWebpackPlugin()
+    ]
   }
 }

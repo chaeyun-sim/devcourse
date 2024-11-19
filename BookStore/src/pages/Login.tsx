@@ -1,8 +1,8 @@
-import { login, signup } from '@/api/auth.api'
 import Button from '@/components/common/Button'
 import InputText from '@/components/common/Input'
 import Title from '@/components/common/Title'
 import { useAlert } from '@/hooks/useAlert'
+import { useAuth } from '@/hooks/useAuth'
 import { useAuthStore } from '@/store/authStore'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -15,10 +15,7 @@ export interface FormData {
 }
 
 const Login = () => {
-  const navigate = useNavigate()
-  const {showAlert} = useAlert()
-
-  const { isLoggedIn, storeLogin, storeLogout } = useAuthStore()
+  const { userLogin } = useAuth();
 
   const {
     register,
@@ -26,23 +23,11 @@ const Login = () => {
     formState: { errors }
   } = useForm<FormData>()
 
-  const onSubmit = (data: FormData) => {
-    login(data)
-      .then((res) => {
-        storeLogin(res.token)
-        showAlert('로그인 완료되었습니다.')
-        navigate('/')
-      })
-      .catch((err) => {
-        showAlert('로그인 실패')
-      })
-  }
-
   return (
     <>
       <Title size="large">로그인</Title>
       <LoginStyle>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(userLogin)}>
           <fieldset>
             <InputText
               type="email"

@@ -1,24 +1,24 @@
 import { deleteCart, fetchCart } from '@/api/cart.api'
+import { queryClient } from '@/api/queryClient'
 import { Cart } from '@/model/cart.model'
-import { useEffect, useState } from 'react'
+import {useMutation, useQuery} from 'react-query'
 
 export const useCart = () => {
-	const [carts, setCarts] = useState<Cart[]>([])
-	const [isEmpty, setIsEmpty] = useState(true)
+	const { data: carts } = useQuery<Cart[]>(['carts'], fetchCart)
+	const { mutate: deleteCartItem } = useMutation(
+		['delete-cart'],
+		(id: number) => deleteCart(id),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries(['cart'])
+			}
+		}
+	)
 
-	const deleteCartItem = (id: number) => {
-		deleteCart(id).then(() => {
-			setCarts(carts.filter(cart => cart.id !== id))
-		})
+
+	return {
+		carts,
+		deleteCartItem,
+		isEmpty: !carts
 	}
-
-	useEffect(() => {
-		fetchCart().then(res => {
-			setCarts(res)
-			setIsEmpty(false)
-		})
-	}, [])
-
-
-	return { carts, deleteCartItem, isEmpty }
 }

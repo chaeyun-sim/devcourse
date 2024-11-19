@@ -16,17 +16,16 @@ export const useOrders = () => {
 		}
 
 		fetchOrder(orderId).then((orderDetail) => {
-      setSelectedItemId(orderId)
-      setOrders(
+  setSelectedItemId(orderId)
+  setOrders(
         orders.map((item) => {
           if (item.id === orderId) {
             return {
               ...item,
               detail: orderDetail
             }
-					}
-					
-					return item;
+          }
+          return item
         })
       )
     })

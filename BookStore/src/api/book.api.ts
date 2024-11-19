@@ -1,5 +1,5 @@
 import { Book, BookDetail } from '@/model/book.model'
-import { httpClient } from './http'
+import { requestHandler } from './http'
 import { Pagination } from '@/model/pagination.model'
 
 interface FetchBookParams {
@@ -9,18 +9,16 @@ interface FetchBookParams {
   limit: number
 }
 
-interface FetchBooksResponse {
+export interface FetchBooksResponse {
   books: Book[]
   pagination: Pagination
 }
 
 export const fetchBooks = async (params: FetchBookParams) => {
-  try {
-    const response = await httpClient.get<FetchBooksResponse>('/books', {
+  try {    
+    return requestHandler<FetchBooksResponse>('get', '/books', {
       params
     })
-
-    return response.data
   } catch (error) {
     return {
       books: [],
@@ -33,16 +31,13 @@ export const fetchBooks = async (params: FetchBookParams) => {
 }
 
 export const fetchBook = async (bookId: string) => {
-  const response = await httpClient.get<BookDetail>(`/books/${bookId}`);
-  return response.data
+  return requestHandler<BookDetail>('get', `/books/${bookId}`)
 }
 
 export const likeBook = async (bookId: string) => {
-  const response = await httpClient.post(`/likes/${bookId}`)
-  return response.data
+  return requestHandler('post', `/likes/${bookId}`)
 }
 
 export const unlikeBook = async (bookId: string) => {
-  const response = await httpClient.delete(`/likes/${bookId}`)
-  return response.data
+  return requestHandler('delete', `/likes/${bookId}`)
 }

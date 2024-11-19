@@ -25,7 +25,7 @@ const Cart = () => {
   }
 
   const totalQuantity = useMemo(() => {
-    return carts.reduce((acc, cur) => {
+    return carts?.reduce((acc, cur) => {
       if (checkedItems.includes(cur.id)) {
         return acc + cur.quantity
       }
@@ -34,7 +34,7 @@ const Cart = () => {
   }, [carts, checkedItems])
 
   const totalPrice = useMemo(() => {
-    return carts.reduce((acc, cur) => {
+    return carts?.reduce((acc, cur) => {
       if (checkedItems.includes(cur.id)) {
         return acc + cur.price * cur.quantity
       }
@@ -49,9 +49,9 @@ const Cart = () => {
 
     const orderData: Omit<OrderSheet, 'delivery'> = {
       items: checkedItems,
-      totalPrice,
-      totalQuantity,
-      firstBookTitle: carts[0].title
+      totalPrice: totalPrice as number,
+      totalQuantity: totalQuantity as number,
+      firstBookTitle: carts?.[0].title as string
     }
 
     showConfirm('주문하시겠습니까?', () => {
@@ -72,7 +72,7 @@ const Cart = () => {
         ) : (
           <>
             <div className="content">
-              {carts.map((cart) => (
+              {carts?.map((cart) => (
                 <CartItem
                   key={cart.id}
                   cart={cart}
@@ -83,7 +83,7 @@ const Cart = () => {
               ))}
             </div>
             <div className="summary">
-              <CartSummary totalQuantity={totalQuantity} totalPrice={totalPrice} />
+              <CartSummary totalQuantity={totalQuantity!} totalPrice={totalPrice!} />
               <Button size="large" scheme="primary" onClick={handleOerder}>
                 주문하기
               </Button>

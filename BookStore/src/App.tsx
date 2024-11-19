@@ -12,8 +12,11 @@ import BookDetail from './components/books/BookDetail'
 import Cart from './pages/Cart'
 import Order from './pages/Order'
 import OrderList from './pages/OrderList'
+import Error from './components/common/Error'
+import { QueryClientProvider } from 'react-query'
+import { queryClient } from './api/queryClient'
 
-const router = createBrowserRouter([
+const routeList = [
   {
     path: '/',
     element: <Home />
@@ -50,16 +53,26 @@ const router = createBrowserRouter([
     path: '/orderlist',
     element: <OrderList />
   }
-])
+]
+
+const newRouteList = routeList.map(item => {
+  return {
+    ...item,
+    element: <Layout>{item.element}</Layout>,
+    errorElement: <Error />
+  }
+})
+
+const router = createBrowserRouter(newRouteList)
 
 function App() {
   return (
-    <BookStoreThemeProvider>
-      <ThemeSwitch />
-      <Layout>
+    <QueryClientProvider client={queryClient}>
+      <BookStoreThemeProvider>
+        <ThemeSwitch />
         <RouterProvider router={router} />
-      </Layout>
-    </BookStoreThemeProvider>
+      </BookStoreThemeProvider>
+    </QueryClientProvider>
   )
 }
 

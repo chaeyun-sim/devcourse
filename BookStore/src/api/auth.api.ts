@@ -1,26 +1,27 @@
 import { FormData } from '@/pages/Signup'
-import { httpClient } from './http'
+import { requestHandler } from './http'
 
 export const signup = async (userData: FormData) => {
-  const response = await httpClient.post('/users/join', userData)
-  return response.data
+  return 
 }
 
 export const resetRequest = async (data: FormData) => {
-  const response = await httpClient.post('/users/reset', data)
-  return response.data
+  return requestHandler('post', '/users/reset', data)
 }
 
 export const resetPassword = async (data: FormData) => {
-  const response = await httpClient.put('/users/reset', data)
-  return response.data
+  return requestHandler('put', '/users/reset', data)
 }
 
 interface LoginResponse {
   token: string
 }
 
-export const login = async (data: FormData) => {
-  const response = await httpClient.post<LoginResponse>('/users/login', data)
-  return response.data
+interface LoginData {
+  email: string
+  password: string
+}
+
+export const login = async (data: LoginData): Promise<LoginResponse> => {
+  return requestHandler<LoginResponse>('post', '/users/login', data)
 }
