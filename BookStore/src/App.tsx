@@ -13,8 +13,9 @@ import Cart from './pages/Cart'
 import Order from './pages/Order'
 import OrderList from './pages/OrderList'
 import Error from './components/common/Error'
-import { QueryClientProvider } from 'react-query'
+import { QueryClientProvider } from "@tanstack/react-query"
 import { queryClient } from './api/queryClient'
+import ToastContainer from './components/common/ToastContainer'
 
 const routeList = [
   {
@@ -71,6 +72,7 @@ function App() {
       <BookStoreThemeProvider>
         <ThemeSwitch />
         <RouterProvider router={router} />
+        <ToastContainer />
       </BookStoreThemeProvider>
     </QueryClientProvider>
   )

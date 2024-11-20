@@ -7,13 +7,13 @@ interface AddCartParams {
 }
 
 export const addCart = async (params: AddCartParams) => {
-  return requestHandler('post', '/carts', params)
+  return await requestHandler('post', '/carts', params)
 }
 
 export const fetchCart = async () => {
-	return requestHandler<Cart[]>('get', '/carts')
+	return await requestHandler<Cart[]>('get', '/carts')
 }
 
 export const deleteCart = async (cartId: number) => {
-	return requestHandler('delete', `/carts/${cartId}`)
+	return await requestHandler('delete', `/carts/${cartId}`)
 }

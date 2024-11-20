@@ -2,7 +2,7 @@ import { fetchCategory } from '@/api/category.api'
 import { Category } from '@/model/category.model'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import {useQuery} from 'react-query'
+import {useQuery} from "@tanstack/react-query"
 
 export const useCategory = () => {
   const location = useLocation()
@@ -11,10 +11,6 @@ export const useCategory = () => {
   const { data: categories } = useQuery({
     queryKey: ['categories'],
     queryFn: fetchCategory,
-    onSuccess: (data: Category[]) => ([
-      { id: null, name: '전체' }, 
-      ...data
-    ])
   })
 
   const setActive = () => {

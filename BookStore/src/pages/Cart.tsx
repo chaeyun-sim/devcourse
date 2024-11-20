@@ -5,6 +5,7 @@ import Empty from '@/components/common/Empty';
 import Title from '@/components/common/Title';
 import { useAlert } from '@/hooks/useAlert';
 import { useCart } from '@/hooks/useCart';
+import { Cart as ICart } from '@/model/cart.model';
 import { OrderSheet } from '@/model/order.model';
 import React, { useMemo, useState } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
@@ -25,7 +26,7 @@ const Cart = () => {
   }
 
   const totalQuantity = useMemo(() => {
-    return carts?.reduce((acc, cur) => {
+    return carts?.reduce((acc: number, cur: ICart) => {
       if (checkedItems.includes(cur.id)) {
         return acc + cur.quantity
       }
@@ -34,7 +35,7 @@ const Cart = () => {
   }, [carts, checkedItems])
 
   const totalPrice = useMemo(() => {
-    return carts?.reduce((acc, cur) => {
+    return carts?.reduce((acc: number, cur: ICart) => {
       if (checkedItems.includes(cur.id)) {
         return acc + cur.price * cur.quantity
       }
@@ -72,7 +73,7 @@ const Cart = () => {
         ) : (
           <>
             <div className="content">
-              {carts?.map((cart) => (
+              {carts?.map((cart: ICart) => (
                 <CartItem
                   key={cart.id}
                   cart={cart}

@@ -4,17 +4,22 @@ import { useAuthStore } from '@/store/authStore'
 import { useEffect, useState } from 'react'
 import { useAlert } from './useAlert'
 import { addCart } from '@/api/cart.api'
+import { BookReviewItem, BookReviewItemWrite } from '@/model/review.model'
+import { fetchAddReview, fetchBookReview } from '@/api/review.api'
 
 export const useBook = (bookId: string) => {
+	const { isLoggedIn } = useAuthStore()
+	const { showAlert } = useAlert()
+	
 	const [book, setBook] = useState<BookDetail | null>(null)
 	const [cartAdded, setCartAdded] = useState(false)
-	const { isLoggedIn } = useAuthStore()		
-	const {showAlert} = useAlert();
+	const [reviews, setReviews] = useState<BookReviewItem[]>([])
 
 	useEffect(() => {
 		if (!bookId) return;
 
-    fetchBook(bookId).then(setBook)
+		fetchBook(bookId).then(setBook)
+		fetchBookReview(bookId).then(setReviews)
 	}, [bookId])
 	
 	const likeToggle = () => {
@@ -52,8 +57,16 @@ export const useBook = (bookId: string) => {
         setCartAdded(false)
       }, 3000)
     })
-  }
+	}
+	
+	const addReview = (data: BookReviewItemWrite) => {
+		if (!book) return;
+
+		fetchAddReview(String(bookId), data).then(() => {
+      fetchBookReview(bookId).then(setReviews)
+    })
+	}
 
 
-	return { book, likeToggle, addToCart, cartAdded }
+	return { book, reviews, likeToggle, addToCart, cartAdded, addReview }
 }

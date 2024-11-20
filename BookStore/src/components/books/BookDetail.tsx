@@ -1,22 +1,25 @@
-import { useBook } from '@/hooks/useBook';
-import React from 'react';
-import { Link, useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import Title from '../common/Title';
-import { getImgSrc } from '@/utils/image';
-import { BookDetail as IBookDetail } from '@/model/book.model';
-import dayjs from 'dayjs';
-import EllipsisBox from './EllipsisBox';
-import LikeButton from '../book/LikeButton';
-import AddToCart from '../book/AddToCart';
+import { useBook } from '@/hooks/useBook'
+import React, { useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import styled from 'styled-components'
+import Title from '../common/Title'
+import { getImgSrc } from '@/utils/image'
+import { BookDetail as IBookDetail } from '@/model/book.model'
+import dayjs from 'dayjs'
+import EllipsisBox from './EllipsisBox'
+import LikeButton from '../book/LikeButton'
+import AddToCart from '../book/AddToCart'
+import BookReview from '../book/BookReview'
+import { Tab, Tabs } from '../common/Tabs'
+import Modal from '../common/Modal'
 
 const bookInfoList = [
   {
     label: '카테고리',
-		key: 'categoryName',
-		filter: (book: IBookDetail) => (
-			<Link to={`/book?category_id=${book.category_id}`}>{book.categoryName}</Link>
-		)
+    key: 'categoryName',
+    filter: (book: IBookDetail) => (
+      <Link to={`/book?category_id=${book.category_id}`}>{book.categoryName}</Link>
+    )
   },
   {
     label: '포맷',
@@ -42,85 +45,107 @@ const bookInfoList = [
   }
 ]
 
-const BookDetail = () => {
-	const { bookId } = useParams();
-	const { book, likeToggle } = useBook(bookId!);
+function BookDetail() {
+  const { bookId } = useParams()
+  const { book, likeToggle, reviews, addReview } = useBook(bookId!)
+  const [isImgOpen, setIsImgOpen] = useState(false)
 
-	if (!book) return null
+  if (!book) return null
 
-	return (
+  return (
     <BookDetailStyle>
       <header className="header">
-        <div>
+        <div className="img" onClick={() => setIsImgOpen(true)}>
           <img src={getImgSrc(book.img)} alt={book.title} />
         </div>
+        <Modal isOpen={isImgOpen} onClose={() => setIsImgOpen(false)}>
+          <img src={getImgSrc(book.img)} alt={book.title} />
+        </Modal>
         <div className="info">
           <Title size="large" color="text">
             {book.title}
           </Title>
-          {bookInfoList.map((info) => (
-            <dl key={info.key}>
-              <dt>{info.label}</dt>
-              <dd>{info.filter ? info.filter(book) : book[info.key as keyof IBookDetail]}</dd>
+          {bookInfoList.map((item) => (
+            <dl>
+              <dt>{item.label}</dt>
+              <dd>{item.filter ? item.filter(book) : book[item.key as keyof IBookDetail]}</dd>
             </dl>
           ))}
-          <p className="summary">
-            <div className="like">라이크</div>
-            <div className="add-cart">장바구니 넣기</div>
-          </p>
+          <p className="summary">{book.summary}</p>
+
           <div className="like">
             <LikeButton book={book} onClick={likeToggle} />
           </div>
+
           <div className="add-cart">
             <AddToCart book={book} />
           </div>
         </div>
       </header>
       <div className="content">
-        <Title size="medium">상세 설명</Title>
-        <EllipsisBox linelimit={2}>{book.detail}</EllipsisBox>
-        <Title size="medium">목차</Title>
-        <p className="index">{book.content}</p>
+        <Tabs>
+          <Tab title="상세 설명">
+            <Title size="medium">상세 설명</Title>
+            <EllipsisBox linelimit={4}>{book.detail}</EllipsisBox>
+          </Tab>
+          <Tab title="목차">
+            <Title size="medium">목차</Title>
+            <p className="index">{book.content}</p>
+          </Tab>
+          <Tab title="리뷰">
+            <Title size="medium">리뷰</Title>
+            <BookReview reviews={reviews} onAdd={addReview} />
+          </Tab>
+        </Tabs>
       </div>
     </BookDetailStyle>
   )
-};
-
-export default BookDetail;
+}
 
 const BookDetailStyle = styled.div`
-	.header {
-		display: flex;
-		align-items: start;
-		gap: 24px;
-		padding: 0 0 24px 0;
-	}
+  .header {
+    display: flex;
+    align-items: start;
+    gap: 24px;
+    padding: 0 0 24px 0;
 
-	.img {
-		flex: 1,
-		img {
-			width: 100%;
-			height: auto;
-		}
-	}
+    .img {
+      flex: 1;
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
 
-	.info {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
+  .info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 
-		dl {
-			display: flex;
-			margin: 0;
+  dl {
+    display: flex;
+    margin: 0;
+    dt {
+      width: 80px;
+      color: ${({ theme }) => theme.color.secondary};
+    }
+    a {
+      color: ${({ theme }) => theme.color.primary};
+    }
+  }
 
-			dt {
-				width: 80px;
-				color: ${({theme}) => theme.color.secondary}
-			}
-		}
-	}
-
-	.content {
-	}
+  .content {
+    // .detail {
+    //   overflow: hidden;
+    //   text-overflow: ellipsis;
+    //   display: -webkit-box;
+    //   -webkit-line-clamp: 4;
+    //   -webkit-box-orient: vertical;
+    // }
+  }
 `
+
+export default BookDetail

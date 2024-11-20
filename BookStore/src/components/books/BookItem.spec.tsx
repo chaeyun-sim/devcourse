@@ -1,8 +1,8 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import BookItem from './BookItem'
-import { BookStoreThemeProvider } from '../../context/themeContext'
-import { Book } from '../../model/book.model'
+import { BookStoreThemeProvider } from '@/context/themeContext'
+import { Book } from '@/model/book.model'
 
 const dummyBook: Book = {
   id: 1,

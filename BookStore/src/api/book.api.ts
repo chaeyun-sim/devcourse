@@ -16,7 +16,7 @@ export interface FetchBooksResponse {
 
 export const fetchBooks = async (params: FetchBookParams) => {
   try {    
-    return requestHandler<FetchBooksResponse>('get', '/books', {
+    return await requestHandler<FetchBooksResponse>('get', '/books', {
       params
     })
   } catch (error) {
@@ -31,13 +31,13 @@ export const fetchBooks = async (params: FetchBookParams) => {
 }
 
 export const fetchBook = async (bookId: string) => {
-  return requestHandler<BookDetail>('get', `/books/${bookId}`)
+  return await requestHandler<BookDetail>('get', `/books/${bookId}`)
 }
 
 export const likeBook = async (bookId: string) => {
-  return requestHandler('post', `/likes/${bookId}`)
+  return await requestHandler('post', `/likes/${bookId}`)
 }
 
 export const unlikeBook = async (bookId: string) => {
-  return requestHandler('delete', `/likes/${bookId}`)
+  return await requestHandler('delete', `/likes/${bookId}`)
 }
