@@ -35,6 +35,7 @@ const Login = () => {
               {...register('email', {
                 required: true
               })}
+              inputMode="email"
             />
             {errors.email && <p className="error-text">이메일을 입력해주세요.</p>}
           </fieldset>
@@ -45,6 +46,7 @@ const Login = () => {
               {...register('password', {
                 required: true
               })}
+              inputMode="text"
             />
             {errors.password && <p className="error-text">비밀번호 입력해주세요.</p>}
           </fieldset>

@@ -35,7 +35,7 @@ const BookItem = ({ book, view }: IProps) => {
 
 export default BookItem
 
-const BookItemStyle = styled.div<Pick<IProps, 'view'>>`
+export const BookItemStyle = styled.div<Pick<IProps, 'view'>>`
   a {
     display: flex;
     flex-direction: ${({ view }) => (view === 'grid' ? 'column' : 'row')};
